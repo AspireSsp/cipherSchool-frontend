@@ -101,10 +101,11 @@ export default function WithAction() {
                                 </Flex>
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>Link 1</MenuItem>
-                                <MenuItem>Link 2</MenuItem>
-                                <MenuDivider />
-                                <MenuItem>Link 3</MenuItem>
+                                <MenuItem><Link to={'/'}>Dashboard</Link></MenuItem>
+                                <MenuItem><Link to={'/profile'}>My Profile</Link></MenuItem>
+                                <MenuItem><Link to={'/'}>Enrolled Courses</Link></MenuItem>
+                                <MenuItem><Link to={'/'}>WishList</Link></MenuItem>
+                                <MenuItem><Link to={'/'}>Liked Videos</Link></MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>

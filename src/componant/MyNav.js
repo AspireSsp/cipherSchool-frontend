@@ -29,6 +29,7 @@ import CardItem from './CardItem'
 import MyNavItem from './Navigation'
 import { Link } from "react-router-dom";
 import axios from 'axios'
+import Profile from './Profile';
 
 interface LinkItemProps {
     name: string;
@@ -47,12 +48,17 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [user, setUser] = useState({});
     const [videoList, setVideoList] = useState([]);
+    console.log("curr url ==", window.location.pathname);
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('userData')))
         getAllVideos();
     }, []);
-
+    const success = (data)=>{
+        console.log('success is calling', data);
+        localStorage.setItem("userData", JSON.stringify(data))
+        setUser(data);
+    }
     const getAllVideos = async()=>{
         const data = await axios.get('https://cipherschool-backend-7j25.onrender.com/api/v1/allvideos')
         // console.log(data)
@@ -66,6 +72,7 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
                 display={{ base: 'none', md: 'block' }}
             />
             <Drawer
+                zIndex={1}
                 autoFocus={false}
                 isOpen={isOpen}
                 placement="left"
@@ -79,24 +86,27 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
             </Drawer>
             {/* mobilenav */}
             <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }} p="4" background={"white"}>
+            <Box ml={{ base: 0, md: 60 }} background={"white"} zIndex={0}>
                 <Box h={'60px'} w="85%" bg={useColorModeValue('white', 'gray.900')} position="fixed" top={'0px'} zIndex={1} ms="-20px" >
                     <MyNavItem />
-
                 </Box>
-                <Wrap mt={'2%'}>
-                    {
-                        videoList? 
-                        videoList.map((item)=>(
-                        <WrapItem>
-                            <Link to= {`/video/player/${item._id}`}>
-                                <CardItem video={item} />
-                            </Link>
-                        </WrapItem>
+                {
+                    window.location.pathname == '/profile' ? 
+                    <Profile user={user} success = {success} />  :
+                    <Wrap mt={'2%'}>
+                        {
+                            videoList? 
+                            videoList.map((item)=>(
+                            <WrapItem>
+                                <Link to= {`/video/player/${item._id}`}>
+                                    <CardItem video={item} />
+                                </Link>
+                            </WrapItem>
 
-                        )) : ""
-                    }
-                </Wrap>
+                            )) : ""
+                        }
+                    </Wrap>
+                }
             </Box>
         </Box>
     );
@@ -115,6 +125,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             w={{ base: 'full', md: 60 }}
             pos="fixed"
             h="full"
+            zIndex={1}
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">

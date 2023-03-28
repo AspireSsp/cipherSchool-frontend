@@ -15,6 +15,7 @@ function App() {
         {/* <Login /> */}
         <Routes>
           <Route path="/" element={<Dashbord />} />
+          <Route path="/profile" element={<Dashbord />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/video/player/:id" element={<VideoScreen />} />
