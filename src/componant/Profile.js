@@ -1,7 +1,8 @@
-import { Avatar, Box, Divider, Flex, Spacer, Stack, Text, useColorModeValue , Button, InputGroup,InputLeftElement,Input,FormLabel,FormControl, Select, Badge, Wrap, Textarea } from '@chakra-ui/react'
+import { Avatar, Box, Divider, Flex, Spacer, Stack, Text, useColorModeValue , Button, InputGroup,InputLeftElement,Input,FormLabel,FormControl, Select, Badge, Wrap, Textarea, useDisclosure } from '@chakra-ui/react'
 import axios from 'axios';
 import React, { useState ,useEffect } from 'react'
 import HeatMap from 'react-best-heatmap';
+import PasswordModel from './PasswordModel';
 
 
 const Profile = (props) => {
@@ -25,6 +26,11 @@ const Profile = (props) => {
      const [selectInfo, setSelectInfo] = useState(false);
      const [currentJob, setCurrentJob] = useState(props?.user?.currentJob);
      const [highestEducation, setHighestEducation] = useState(props?.user?.highestEducation);
+     const { isOpen, onOpen, onClose } = useDisclosure()
+
+     const initialRef = React.useRef(null)
+     const finalRef = React.useRef(null)
+
 
      const [password, setPassword] = useState("")
     console.log("meeeeee", props?.user);
@@ -72,8 +78,8 @@ const Profile = (props) => {
                 />
                 <Stack direction={'column'} spacing={0} fontSize={'sm'}>
                     <Text>Hello,</Text>
-                    <Text fontWeight={700}>Achim Rolle</Text>
-                    <Text color={'black'}>sanjaypraj@gmail.com</Text>
+                    <Text fontWeight={700}>{props?.user?.name}</Text>
+                    <Text color={'black'}>{props?.user?.email}</Text>
                 </Stack>
             </Stack>
             <Spacer />
@@ -260,7 +266,7 @@ const Profile = (props) => {
                         </Flex>
                     </Box>
                     <Flex alignItems={'center'}>
-                        <Button bg='#f3912e'>
+                        <Button onClick={onOpen} bg='#f3912e'>
                             Edit
                         </Button>
                     </Flex>
@@ -320,6 +326,7 @@ const Profile = (props) => {
             </Box>
 
         </Box>
+        <PasswordModel isOpen={isOpen} onOpen={onOpen} onClose={onClose} user={props?.user} />
     </Box>
   )
 }
